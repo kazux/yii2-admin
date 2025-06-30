@@ -10,7 +10,7 @@ use yii\rbac\Item;
 
 /**
  * AuthItemSearch represents the model behind the search form about AuthItem.
- * 
+ *
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  * @since 1.0
  */
@@ -74,20 +74,20 @@ class AuthItem extends Model
             });
         }
         $this->load($params);
-        if ($this->validate()) {
+      if ($this->validate()) {
+        $search = mb_strtolower(trim((string)$this->name));
+        $desc = mb_strtolower(trim((string)$this->description));
+        $ruleName = $this->ruleName;
 
-            $search = mb_strtolower(trim((string)$this->name));
-            $desc = mb_strtolower(trim((string)$this->description));
-            $ruleName = $this->ruleName;
-            foreach ($items as $name => $item) {
-                $f = (empty($search) || mb_strpos(mb_strtolower($item->name), $search) !== false) &&
-                    (empty($desc) || mb_strpos(mb_strtolower($item->description), $desc) !== false) &&
-                    (empty($ruleName) || $item->ruleName == $ruleName);
-                if (!$f) {
-                    unset($items[$name]);
-                }
-            }
-        }
+        $items = array_filter($items, function ($item) use ($search, $desc, $ruleName) {
+          $itemNameLower = mb_strtolower($item->name);
+          $itemDescLower = mb_strtolower($item->description);
+
+          return (empty($search) || mb_strpos($itemNameLower, $search) !== false)
+            && (empty($desc) || mb_strpos($itemDescLower, $desc) !== false)
+            && (empty($ruleName) || $item->ruleName == $ruleName);
+        });
+      }
 
         return new ArrayDataProvider([
             'allModels' => $items,

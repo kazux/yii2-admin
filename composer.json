@@ -1,5 +1,5 @@
 {
-    "name": "mdmsoft/yii2-admin",
+    "name": "kazux/yii2-admin",
     "description": "RBAC Auth manager for Yii2 ",
     "keywords": ["yii", "admin", "auth", "rbac"],
     "type": "yii2-extension",
@@ -37,6 +37,11 @@
         "asset-installer-paths": {
             "npm-asset-library": "vendor/npm",
             "bower-asset-library": "vendor/bower"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
         }
     }
 }
